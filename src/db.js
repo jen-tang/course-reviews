@@ -5,7 +5,6 @@ const ReviewSchema = mongoose.Schema({
   name: String,
   semester: String,
   year: String,
-  professor: String,
   review: String,
 });
 
