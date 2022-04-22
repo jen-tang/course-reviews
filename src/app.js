@@ -40,24 +40,32 @@ app.get('/api/reviews', async(req, res) => {
   res.json(data);
 });
 
-app.post('/api/review/create', (req, res) => {
+app.post('/api/reviews/create', async (req, res) => {
   // TODO: create new review... if save succeeds, send back JSON
   // representation of saved object
-  req.setRequestHeader("Content-type", "");
-  const review = new Review(req.body);
-  
-  review.save(function(err, review) {
+  //req.setRequestHeader("Content-type", "application/json");
+  //const review = new Review(req.body);
+  const {name, semester, year, review} = req.body;
+
+  console.log(req.body);
+  const revieww = new Review({name, semester, year, review});
+  revieww.save(function(err, review) {
     if (err) {
       console.log(err);
-      res.status(500).send(err);
+      res.json({error: err});
     } else {
       res.json(review);
     }
   });
   //console.log(Reviews.find());
-/*   const {text, from} = req.body;
-  const saved = await (new Message({text, from})).save();
-  res.send(saved); */
+/*   const saved = await (new Review({name, semester, year, review})).save(function(err, review){
+      if (err) {
+      console.log(err);
+      res.json({error: err});
+    } else {
+      res.json(review);
+    }
+  }); */
 });
 
 app.listen(process.env.PORT || DEFAULT_AIT_PORT, (err) => {

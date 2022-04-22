@@ -1,12 +1,30 @@
 // TODO: add client side code for single page application
-document.addEventListener("DOMContentLoaded", main);
-function main() {
-    const btn = document.querySelector('#filterBtn');
-    btn.addEventListener('click', handleClick);
-    const btn2 = document.querySelector('#addBtn');
-    btn2.addEventListener('click', handleClick2);
-    loadMessages();
-}
+
+
+
+async function loadMessages() {
+    const res = await fetch('http://localhost:3000/api/reviews');
+    const reviews = await res.json();
+    //const rows = document.querySelector('tbody');
+    //divs.forEach(d => d.remove());
+    console.log(reviews);
+    for(const m of reviews) {
+        const tr = document.createElement('tr');
+        const td1 = tr.appendChild(document.createElement('td'));
+        td1.innerText = m.name;
+        const td2 = tr.appendChild(document.createElement('td'));
+        td2.innerText = m.semester;
+        const td3 = tr.appendChild(document.createElement('td'));
+        td3.textContent = m.year;
+        const td4 = tr.appendChild(document.createElement('td'));
+        td4.textContent = m.review;
+        document.querySelector('tbody').appendChild(tr);
+        
+        //div.textContent = m.from + '...  ' + m.text;
+      } 
+    //setTimeout(loadMessages, 500);
+    }
+
 
 async function handleClick(evt) {
     evt.preventDefault();
@@ -34,19 +52,19 @@ async function handleClick(evt) {
     const res = await fetch(url, config);
     const reviews = await res.json();
     //addMessagesToPage([review]);
-    let element = document.querySelector('tbody');
+    const element = document.querySelector('tbody');
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }   
     for(const m of reviews){
         const tr = document.createElement('tr');
-        let td1 = tr.appendChild(document.createElement('td'));
+        const td1 = tr.appendChild(document.createElement('td'));
         td1.innerText = m.name;
-        let td2 = tr.appendChild(document.createElement('td'));
+        const td2 = tr.appendChild(document.createElement('td'));
         td2.innerText = m.semester;
-        let td3 = tr.appendChild(document.createElement('td'));
+        const td3 = tr.appendChild(document.createElement('td'));
         td3.textContent = m.year;
-        let td4 = tr.appendChild(document.createElement('td'));
+        const td4 = tr.appendChild(document.createElement('td'));
         td4.textContent = m.review;
         document.querySelector('tbody').appendChild(tr);
     }
@@ -54,6 +72,7 @@ async function handleClick(evt) {
   }
 
   async function handleClick2(evt) {
+    evt.preventDefault();
     const sem = document.querySelector('#semester').value;
     const yr = document.querySelector('#year').value;
     const name = document.querySelector('#name').value;
@@ -68,46 +87,32 @@ async function handleClick(evt) {
     };
 
     const res = await fetch("http://localhost:3000/api/reviews/create", config);
-    const reviews = await res.json();
-    //addMessagesToPage([msg]);
-    console.log(res);
-/*     let element = document.querySelector('tbody');
+    const revieww = await res.json();
+    console.log(revieww);
+    const element = document.querySelector('tbody');
     while (element.firstChild) {
         element.removeChild(element.firstChild);
-    }   
-    for(const m of reviews){
-        const tr = document.createElement('tr');
-        let td1 = tr.appendChild(document.createElement('td'));
-        td1.innerText = m.name;
-        let td2 = tr.appendChild(document.createElement('td'));
-        td2.innerText = m.semester;
-        let td3 = tr.appendChild(document.createElement('td'));
-        td3.textContent = m.year;
-        let td4 = tr.appendChild(document.createElement('td'));
-        td4.textContent = m.review;
-        document.querySelector('tbody').appendChild(tr);
-    } */
+    }  
+    loadMessages();
+/*     const tr = document.createElement('tr');
+    let td1 = tr.appendChild(document.createElement('td'));
+    td1.innerText = revieww.name;
+    let td2 = tr.appendChild(document.createElement('td'));
+    td2.innerText = revieww.semester;
+    let td3 = tr.appendChild(document.createElement('td'));
+    td3.textContent = revieww.year;
+    let td4 = tr.appendChild(document.createElement('td'));
+    td4.textContent = revieww.review;
+    document.querySelector('tbody').appendChild(tr);   */     
+    
   }
 
-async function loadMessages() {
-    const res = await fetch('http://localhost:3000/api/reviews')
-    const reviews = await res.json();
-    //const rows = document.querySelector('tbody');
-    //divs.forEach(d => d.remove());
-    console.log(reviews);
-    for(const m of reviews) {
-        const tr = document.createElement('tr');
-        let td1 = tr.appendChild(document.createElement('td'));
-        td1.innerText = m.name;
-        let td2 = tr.appendChild(document.createElement('td'));
-        td2.innerText = m.semester;
-        let td3 = tr.appendChild(document.createElement('td'));
-        td3.textContent = m.year;
-        let td4 = tr.appendChild(document.createElement('td'));
-        td4.textContent = m.review;
-        document.querySelector('tbody').appendChild(tr);
-        
-        //div.textContent = m.from + '...  ' + m.text;
-      } 
-    //setTimeout(loadMessages, 500);
-    }
+function main() {
+    const btn = document.querySelector('#filterBtn');
+    btn.addEventListener('click', handleClick);
+    const btn2 = document.querySelector('#addBtn');
+    btn2.addEventListener('click', handleClick2);
+    loadMessages();
+}
+
+document.addEventListener("DOMContentLoaded", main);
